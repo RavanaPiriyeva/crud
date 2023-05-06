@@ -1,38 +1,37 @@
 import React, { useState } from 'react'
-import { Container, Row, Table, Col, Form, FormGroup, Label, Button, Input ,Modal, ModalHeader, ModalBody, ModalFooter,} from 'reactstrap'
+import { Container, Row, Table, Col, Form, FormGroup, Label, Button, Input, Modal, ModalHeader, ModalBody, ModalFooter, } from 'reactstrap'
 import Edit from './Edit';
 
 
 const DataTable = (props) => {
-    let { users, removeuser } = props
+    let { users, removeuser, setuser } = props
 
-    
+
     const [editName, seteditName] = useState('');
-    const [editPrice, seteditPrice] = useState('');
+    const [editSurname, seteditSurname] = useState('');
     const [editage, seteditage] = useState(0)
-    const editProduct = (item) => {
+    const [editId, seteditId] = useState(0)
+
+    const editData = (item) => {
+        toggle()
         seteditName(item.name);
-        seteditPrice(item.surname)
+        seteditSurname(item.surname)
         seteditage(item.age)
+        seteditId(item.id)
+        console.log(editId);
+
     }
-
-    
-    // const handleInputs = () => {
-
-    // }
     const save = () => {
-        // let product = products.find(q => q.id == editId);
+        let user = users.find((q) => q.id === editId);
+        user.name = editName;
+        user.surname = editSurname;
+        user.age = editage;
+        setuser([...users])
+        toggle()
 
-        // product.name = editName;
-        // product.unitPrice = editPrice;
-
-        // setproducts([...products])
     }
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
-
-    //const [newuser, setnewuser] = useState(users)
-
     return (
         <div>
             <Table dark>
@@ -50,11 +49,11 @@ const DataTable = (props) => {
                     {
                         users.map((x, index) => {
                             return <tr>
-                                <th scope="row">{index + 1}</th>
+                                <th scope="row">{x.id}</th>
                                 <td>{x.name}</td>
                                 <td>{x.surname}</td>
                                 <td>{x.age}</td>
-                                <td> <Button color="info" onClick={toggle}>Edit</Button></td>
+                                <td> <Button color="info" onClick={() => editData(x, index)}>Edit</Button></td>
                                 <td> <Button color="danger" onClick={() => removeuser(index)}>Delete</Button></td>
                             </tr>
 
@@ -62,30 +61,30 @@ const DataTable = (props) => {
                     }
                 </tbody>
             </Table>
-          
-            <Modal isOpen={modal} toggle={toggle} >
-            <Col xs={12}>
-                <Form>
-                    <FormGroup>
-                        <Label for="exampleEmail" hidden >Email </Label>
-                        <Input id="exampleEmail" name="email" placeholder="Name" type="text" value={editName} onChange={(e) => seteditName(e.target.value)} />
-                    </FormGroup>
-                    {' '}
-                    <FormGroup>
-                        <Label for="examplePassword" hidden >Password </Label>
-                        <Input id="examplePassword" name="password" placeholder="Surname" type="text" value={editPrice} onChange={(e) => seteditPrice(e.target.value)} />
-                    </FormGroup>
-                    {' '}
 
-                    <FormGroup>
-                        <Label for="examplePassword" hidden>Password</Label>
-                        <Input id="examplePassword" name="password" placeholder="Age" type="number" value={editage} onChange={(e) => seteditage(e.target.value)} />
-                    </FormGroup>
-                    {' '}
-                    <Button onClick={save}> Save </Button>
-                </Form>
-            </Col>
-        </Modal>
+            <Modal isOpen={modal} toggle={toggle} >
+                <Col xs={12}>
+                    <Form>
+                        <FormGroup>
+                            <Label for="exampleEmail" hidden >Email </Label>
+                            <Input id="exampleEmail" name="email" placeholder="Name" type="text" value={editName} onChange={(e) => seteditName(e.target.value)} />
+                        </FormGroup>
+                        {' '}
+                        <FormGroup>
+                            <Label for="examplePassword" hidden >Password </Label>
+                            <Input id="examplePassword" name="password" placeholder="Surname" type="text" value={editSurname} onChange={(e) => seteditSurname(e.target.value)} />
+                        </FormGroup>
+                        {' '}
+
+                        <FormGroup>
+                            <Label for="examplePassword" hidden>Password</Label>
+                            <Input id="examplePassword" name="password" placeholder="Age" type="number" value={editage} onChange={(e) => seteditage(e.target.value)} />
+                        </FormGroup>
+                        {' '}
+                        <Button onClick={save}> Save </Button>
+                    </Form>
+                </Col>
+            </Modal>
         </div>
     )
 }

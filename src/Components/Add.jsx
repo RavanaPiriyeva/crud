@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
-import { Container, Row, Table, Col, Form, FormGroup, Label, Button, Input ,Modal, ModalHeader, ModalBody, ModalFooter, } from 'reactstrap'
+import { Container, Row, Table, Col, Form, FormGroup, Label, Button, Input, Modal, ModalHeader, ModalBody, ModalFooter, } from 'reactstrap'
 import DataTable from './DataTable'
 
 const Add = () => {
     const [alluser, setalluser] = useState([])
+    let [forId, setForId] = useState(0)
     let userObj = {
+        id: 0,
         name: undefined,
         surname: undefined,
         age: undefined
@@ -12,11 +14,17 @@ const Add = () => {
     const [user, setuser] = useState(userObj);
 
     const handleInputs = (value, type) => {
+
+
         setuser((oldData) => ({ ...oldData, [type]: value }))
     }
     ///add product obj to products state
     const addUser = () => {
+        let x = forId + 1;
+        setForId(x)
+        setuser((oldData) => ({ ...oldData, id: x }))
         setalluser([...alluser, user])
+        
     }
 
     const remove = (i) => {
@@ -28,11 +36,18 @@ const Add = () => {
 
 
 
+
+
+
     return (
         <Container>
             <Row>
                 <Col xs={12}>
                     <Form>
+                        <FormGroup>
+                            <Label for="exampleEmail" hidden > Id</Label>
+                            <Input id="exampleEmail" name="email" placeholder="Id" type="number" readOnly={true} value={forId} onChange={(e) => handleInputs(e.target.value.trim(), 'id')} />
+                        </FormGroup>
                         <FormGroup>
                             <Label for="exampleEmail" hidden >Email </Label>
                             <Input id="exampleEmail" name="email" placeholder="Name" type="text" onChange={(e) => handleInputs(e.target.value.trim(), 'name')} />
@@ -53,10 +68,10 @@ const Add = () => {
                     </Form>
                 </Col>
                 <Col xs={12}>
-                    <DataTable users={alluser} removeuser={remove} />
+                    <DataTable users={alluser} removeuser={remove} setuser={setalluser} />
                 </Col>
             </Row>
-           
+
         </Container>
 
 
