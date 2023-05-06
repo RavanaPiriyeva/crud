@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Container, Row, Table, Col, Form, FormGroup, Label, Button, Input, Modal, ModalHeader, ModalBody, ModalFooter, } from 'reactstrap'
-import Edit from './Edit';
 
 
 const DataTable = (props) => {
